@@ -1,0 +1,50 @@
+import { type TabState } from "./useTodoList";
+
+interface FooterProps {
+  currentTab: TabState;
+  setCurrentTab: (tab: TabState) => void;
+  completedTodoExists: boolean;
+  remainTodosAmount: number;
+  deleteCompletedTodo: () => void;
+}
+
+const Footer = ({ 
+  currentTab,
+  setCurrentTab,
+  completedTodoExists,
+  remainTodosAmount,
+  deleteCompletedTodo,
+}: FooterProps) => {
+    return (
+      <div className="flex px-4 items-center h-12 justify-center shrink-0 border-t-[1px] border-stone-300">
+        <p className="absolute left-4 text-sm text-stone-500">
+          {remainTodosAmount}개 남음
+        </p>
+        <div className="flex gap-4">
+            {(["모두", "진행", "완료"] as TabState[]).map((tab) => (
+              <button
+                key={tab}
+                onClick={setCurrentTab.bind(null, tab)}
+                className={`p-1 text-lg hover:text-stone-600 ${
+                  currentTab == tab 
+                  ? "outline outline-1 outline-stone-300 text-stone-600"
+                  : "text-stone-400"
+                }`}
+              >
+                {tab}
+              </button>
+            ))}
+        </div>
+        {completedTodoExists && (
+          <button 
+            className="absolute right-4 text-stone-400 hover:text-stone-600"
+            onClick={deleteCompletedTodo}
+          >
+            완료된 항목 지우기
+          </button>
+          )}
+      </div>
+    );
+};
+
+export default Footer;
